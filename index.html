@@ -760,21 +760,17 @@
         function togglePlay() {
             if (isPlaying) {
                 audioElement.pause();
+                isPlaying = false;
             } else {
-                // Try to play audio with autoplay policy workaround
-                const playPromise = audioElement.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(_ => {
-                        console.log('Audio playing successfully');
-                    })
-                    .catch(error => {
-                        console.error('Autoplay was prevented:', error);
-                        // Show message to user to click play button
-                        alert('Please click the play button to start the audio (browser autoplay policy)');
-                    });
-                }
+                // Direct audio playback - user initiated action
+                audioElement.play().then(_ => {
+                    console.log('Audio playing successfully');
+                    isPlaying = true;
+                }).catch(error => {
+                    console.error('Audio play failed:', error);
+                    isPlaying = false;
+                });
             }
-            isPlaying = !isPlaying;
             updatePlayIcon();
         }
 
