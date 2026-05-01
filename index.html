@@ -705,27 +705,43 @@
                 document.getElementById('totalTimeDesktop').textContent = song.duration;
             }
             
-            // Load and play audio
-            audioElement.src = song.file;
+            // Clear previous event listeners
+            audioElement.removeEventListener('error', handleAudioError);
+            audioElement.removeEventListener('canplay', handleAudioCanPlay);
+            
+            // Load and play audio with absolute path
+            const audioPath = window.location.origin + '/' + song.file;
+            console.log('Attempting to load audio from:', audioPath);
+            
+            audioElement.src = audioPath;
             audioElement.load();
             
             showAudioPlayer();
             
             // Add error handling
-            audioElement.addEventListener('error', function(e) {
+            function handleAudioError(e) {
                 console.error('Audio error:', e);
                 console.error('Audio error code:', audioElement.error);
-                alert('Error loading audio file. Please check if the file exists: ' + song.file);
-            });
+                console.error('Audio src:', audioElement.src);
+                
+                // Try fallback path
+                if (audioElement.src.includes(window.location.origin)) {
+                    console.log('Trying fallback path...');
+                    audioElement.src = song.file;
+                    audioElement.load();
+                } else {
+                    alert('Audio file tidak dapat dimuat. File: ' + song.file + '\nSilakan periksa koneksi internet Anda.');
+                }
+            }
             
-            // Audio is ready, show player but don't auto-play
-            audioElement.addEventListener('canplay', function() {
-                console.log('Audio ready to play:', song.file);
-                // Don't auto-play, wait for user to click play button
+            function handleAudioCanPlay() {
+                console.log('Audio ready to play:', audioElement.src);
                 updatePlayIcon();
-                // Update lyrics for current song
                 updateLyricsForCurrentSong();
-            }, { once: true });
+            }
+            
+            audioElement.addEventListener('error', handleAudioError);
+            audioElement.addEventListener('canplay', handleAudioCanPlay, { once: true });
         }
 
         function showAudioPlayer() {
@@ -896,11 +912,20 @@
             const song = songs[songIndex];
             
             // Update UI
-            document.getElementById('currentSong').textContent = song.title;
-            document.getElementById('totalTime').textContent = song.duration;
+            const isMobile = window.innerWidth < 768;
+            if (isMobile) {
+                document.getElementById('currentSong').textContent = song.title;
+                document.getElementById('totalTime').textContent = song.duration;
+            } else {
+                document.getElementById('currentSongDesktop').textContent = song.title;
+                document.getElementById('totalTimeDesktop').textContent = song.duration;
+            }
             
-            // Load audio
-            audioElement.src = song.file;
+            // Load audio with absolute path
+            const audioPath = window.location.origin + '/' + song.file;
+            console.log('Loading audio for lyrics:', audioPath);
+            
+            audioElement.src = audioPath;
             audioElement.load();
             
             // Show lyrics
