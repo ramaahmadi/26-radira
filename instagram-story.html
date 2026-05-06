@@ -140,10 +140,18 @@
             </button>
             
             <!-- Share Button -->
-            <button onclick="shareToInstagram()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-2xl font-semibold flex items-center justify-center">
+            <button onclick="shareToInstagram()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-2xl font-semibold flex items-center justify-center text-lg shadow-lg">
                 <i class="fab fa-instagram mr-2"></i>
                 Share to Instagram Story
             </button>
+            
+            <!-- Floating Share Button (Always Visible) -->
+            <div class="fixed bottom-6 right-6 z-40 md:hidden">
+                <button onclick="shareToInstagram()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-full font-semibold flex items-center shadow-xl pulse">
+                    <i class="fab fa-instagram mr-2"></i>
+                    <span class="text-sm">Share</span>
+                </button>
+            </div>
         </div>
         
         <!-- Songs Preview -->
