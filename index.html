@@ -1218,44 +1218,31 @@
 
         // Share to Instagram Story function
         function shareToInstagramStory() {
-            const shareData = {
-                title: 'Album 26 - Stories of Resilience',
-                text: '🎵 Album 26 - Stories of Resilience\n🎧 5 inspiring songs about growth\n📱 Available on 48+ streaming platforms\n🔗 ' + window.location.href,
-                url: window.location.href
-            };
+            // Create Instagram Story content
+            const text = '🎵 Album 26 - Stories of Resilience\n🎧 5 inspiring songs about growth\n📱 Available on 48+ streaming platforms\n🔗 ' + window.location.href;
             
-            // Try to use Web Share API
-            if (navigator.share) {
-                navigator.share(shareData).then(() => {
-                    console.log('Successfully shared to Instagram Story');
-                }).catch((error) => {
-                    console.log('Share failed:', error);
-                    // Fallback to Instagram app
-                    openInstagramDirectly();
-                });
-            } else {
-                // Fallback for browsers that don't support Web Share API
-                openInstagramDirectly();
-            }
+            // Try to open Instagram app directly
+            openInstagramDirectly(text);
         }
         
-        function openInstagramDirectly() {
-            // Create Instagram Story URL with pre-filled content
-            const text = encodeURIComponent('🎵 Album 26 - Stories of Resilience\n🎧 5 inspiring songs about growth\n📱 Available on 48+ streaming platforms\n🔗 ' + window.location.href);
+        function openInstagramDirectly(text) {
+            // Instagram deep link for Story creation
+            const instagramUrl = `instagram://story?text=${encodeURIComponent(text)}`;
             
-            // Try multiple methods to open Instagram
-            const instagramUrls = [
-                `https://www.instagram.com/create/story/?text=${text}`,
-                `instagram://story?text=${text}`,
-                `https://instagram.com/create/story/?text=${text}`
-            ];
+            // Try to open Instagram app
+            window.location.href = instagramUrl;
             
-            // Try each URL until one works
-            instagramUrls.forEach((url, index) => {
-                setTimeout(() => {
-                    window.open(url, '_blank');
-                }, index * 100); // Stagger attempts
-            });
+            // Fallback: try opening in browser if app doesn't open
+            setTimeout(() => {
+                // Check if Instagram app opened (user left current page)
+                if (document.hidden) {
+                    return; // App opened successfully
+                }
+                
+                // Fallback to web version
+                const webUrl = `https://www.instagram.com/create/story/?text=${encodeURIComponent(text)}`;
+                window.open(webUrl, '_blank');
+            }, 2000);
         }
 
         // Add scroll animations
