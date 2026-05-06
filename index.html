@@ -258,11 +258,6 @@
                     <span data-key="platforms.viewAll">View All Platforms (48+)</span>
                 </button>
                 
-                <button onclick="shareToInstagramStory()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-full font-semibold hover:from-purple-700 hover:to-pink-700 transition transform hover:scale-105 text-lg mt-4">
-                    <i class="fab fa-instagram mr-3"></i>
-                    <span data-key="platforms.shareInstagram">Share to Instagram Story</span>
-                </button>
-                
                 <div class="mt-12">
                     <p class="text-gray-300 mb-4" data-key="platforms.description">Get the best experience by listening to the full album on your preferred platform</p>
                     <div class="bg-purple-900 bg-opacity-30 rounded-xl p-6 max-w-2xl mx-auto">
@@ -1042,7 +1037,6 @@
                 'platforms.title': 'Listen to Album "26"',
                 'platforms.subtitle': 'Available on your favorite streaming platforms',
                 'platforms.viewAll': 'View All Platforms (48+)',
-                'platforms.shareInstagram': 'Share to Instagram Story',
                 'platforms.description': 'Get best experience by listening to full album on your preferred platform',
                 'platforms.albumInfo': '🎵 Album "26" - Stories of Resilience',
                 'platforms.songCount': '5 inspiring songs about growth and resilience',
@@ -1078,7 +1072,6 @@
                 'platforms.title': 'Dengarkan Album "26"',
                 'platforms.subtitle': 'Tersedia di platform streaming favorit Anda',
                 'platforms.viewAll': 'Lihat Semua Platform (48+)',
-                'platforms.shareInstagram': 'Share ke Instagram Story',
                 'platforms.description': 'Dapatkan pengalaman terbaik dengan mendengarkan full album di platform pilihan Anda',
                 'platforms.albumInfo': '🎵 Album "26" - Stories of Resilience',
                 'platforms.songCount': '5 lagu yang menginspirasi tentang pertumbuhan dan ketahanan',
@@ -1216,35 +1209,7 @@
             }
         });
 
-        // Share to Instagram Story function
-        function shareToInstagramStory() {
-            // Create Instagram Story content
-            const text = '🎵 Album 26 - Stories of Resilience\n🎧 5 inspiring songs about growth\n📱 Available on 48+ streaming platforms\n🔗 ' + window.location.href;
-            
-            // Try to open Instagram app directly
-            openInstagramDirectly(text);
-        }
         
-        function openInstagramDirectly(text) {
-            // Instagram deep link for Story creation
-            const instagramUrl = `instagram://story?text=${encodeURIComponent(text)}`;
-            
-            // Try to open Instagram app
-            window.location.href = instagramUrl;
-            
-            // Fallback: try opening in browser if app doesn't open
-            setTimeout(() => {
-                // Check if Instagram app opened (user left current page)
-                if (document.hidden) {
-                    return; // App opened successfully
-                }
-                
-                // Fallback to web version
-                const webUrl = `https://www.instagram.com/create/story/?text=${encodeURIComponent(text)}`;
-                window.open(webUrl, '_blank');
-            }, 2000);
-        }
-
         // Add scroll animations
         window.addEventListener('scroll', function() {
             const elements = document.querySelectorAll('.fade-in');
