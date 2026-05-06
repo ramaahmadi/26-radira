@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Album 26 - Instagram Story</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            overflow-x: hidden;
+        }
+        
+        .story-container {
+            width: 100vw;
+            height: 100vh;
+            max-width: 360px;
+            max-height: 640px;
+            margin: 0 auto;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .music-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .platform-item {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .platform-item:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="story-container">
+        <!-- Hero Section -->
+        <div class="flex flex-col items-center justify-center px-6 py-8 text-center">
+            <div class="floating mb-6">
+                <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                    <span class="text-3xl font-bold text-white">26</span>
+                </div>
+            </div>
+            
+            <h1 class="text-3xl font-bold mb-3 gradient-text">Album 26</h1>
+            <p class="text-sm text-gray-300 mb-6">Stories of Resilience</p>
+            
+            <div class="music-card rounded-2xl p-4 mb-6 slide-up">
+                <p class="text-xs text-gray-300 mb-2">🎵 5 Inspiring Songs</p>
+                <p class="text-xs text-gray-400">Release: 22 May 2026</p>
+            </div>
+        </div>
+        
+        <!-- CTA Section -->
+        <div class="px-6 mb-6">
+            <button onclick="showPlatforms()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-2xl font-semibold text-lg pulse">
+                <i class="fas fa-music mr-2"></i>
+                Listen Now (48+ Platforms)
+            </button>
+        </div>
+        
+        <!-- Songs Preview -->
+        <div class="px-6 mb-6">
+            <h2 class="text-xl font-bold mb-4 text-center">Preview Songs</h2>
+            <div class="space-y-3">
+                <div class="music-card rounded-xl p-4 flex items-center">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-sm font-bold">1</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-sm font-semibold">26</h3>
+                        <p class="text-xs text-gray-400">3:45</p>
+                    </div>
+                    <button onclick="playPreview(0)" class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-play text-xs text-white"></i>
+                    </button>
+                </div>
+                
+                <div class="music-card rounded-xl p-4 flex items-center">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-sm font-bold">2</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-sm font-semibold">Not That Boy</h3>
+                        <p class="text-xs text-gray-400">3:32</p>
+                    </div>
+                    <button onclick="playPreview(1)" class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-play text-xs text-white"></i>
+                    </button>
+                </div>
+                
+                <div class="music-card rounded-xl p-4 flex items-center">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-sm font-bold">3</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-sm font-semibold">New Man, New Me</h3>
+                        <p class="text-xs text-gray-400">4:12</p>
+                    </div>
+                    <button onclick="playPreview(2)" class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-play text-xs text-white"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Platforms Modal -->
+        <div id="platformsModal" class="fixed inset-0 bg-black bg-opacity-95 z-50 hidden overflow-y-auto">
+            <div class="min-h-screen px-4 py-6">
+                <div class="max-w-sm mx-auto">
+                    <!-- Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-white">Choose Platform</h3>
+                        <button onclick="hidePlatforms()" class="text-white text-2xl">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Platform Grid -->
+                    <div class="platform-grid mb-6">
+                        <div class="platform-item" onclick="openPlatform('spotify')">
+                            <i class="fab fa-spotify text-green-500 text-2xl mb-1"></i>
+                            <p class="text-xs text-white">Spotify</p>
+                        </div>
+                        
+                        <div class="platform-item" onclick="openPlatform('apple')">
+                            <i class="fab fa-apple text-gray-300 text-2xl mb-1"></i>
+                            <p class="text-xs text-white">Apple</p>
+                        </div>
+                        
+                        <div class="platform-item" onclick="openPlatform('youtube')">
+                            <i class="fab fa-youtube text-red-500 text-2xl mb-1"></i>
+                            <p class="text-xs text-white">YouTube</p>
+                        </div>
+                        
+                        <div class="platform-item" onclick="openPlatform('tidal')">
+                            <i class="fas fa-water text-blue-400 text-2xl mb-1"></i>
+                            <p class="text-xs text-white">Tidal</p>
+                        </div>
+                        
+                        <div class="platform-item" onclick="openPlatform('amazon')">
+                            <i class="fab fa-amazon text-blue-400 text-2xl mb-1"></i>
+                            <p class="text-xs text-white">Amazon</p>
+                        </div>
+                        
+                        <div class="platform-item" onclick="openPlatform('deezer')">
+                            <i class="fab fa-deezer text-purple-400 text-2xl mb-1"></i>
+                            <p class="text-xs text-white">Deezer</p>
+                        </div>
+                        
+                        <div class="platform-item" onclick="openPlatform('soundcloud')">
+                            <i class="fab fa-soundcloud text-orange-400 text-2xl mb-1"></i>
+                            <p class="text-xs text-white">SoundCloud</p>
+                        </div>
+                        
+                        <div class="platform-item" onclick="openPlatform('bandcamp')">
+                            <i class="fab fa-bandcamp text-blue-500 text-2xl mb-1"></i>
+                            <p class="text-xs text-white">Bandcamp</p>
+                        </div>
+                        
+                        <div class="platform-item" onclick="openPlatform('more')">
+                            <i class="fas fa-ellipsis-h text-gray-400 text-2xl mb-1"></i>
+                            <p class="text-xs text-white">More</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="text-center">
+                        <p class="text-xs text-gray-400">Available on 48+ platforms</p>
+                        <p class="text-xs text-gray-500">Tap any platform to open</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Audio Player (Hidden by default) -->
+        <div id="audioPlayer" class="fixed bottom-0 left-0 right-0 bg-black bg-opacity-90 backdrop-blur-lg p-4 transform translate-y-full transition-transform duration-300">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-music text-white text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold" id="currentSong">Song Title</p>
+                        <p class="text-xs text-gray-400">Album 26</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="previousTrack()" class="text-white">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    <button onclick="togglePlay()" class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-play text-white text-sm" id="playIcon"></i>
+                    </button>
+                    <button onclick="nextTrack()" class="text-white">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                    <button onclick="closeAudioPlayer()" class="text-white ml-2">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Songs data
+        const songs = [
+            { title: "26", duration: "3:45", file: "audio/1. 26.mp3" },
+            { title: "Not That Boy", duration: "3:32", file: "audio/2. Not That Boy.mp3" },
+            { title: "New Man, New Me", duration: "4:12", file: "audio/3. New Man, New Me.mp3" },
+            { title: "The Man I'm Trying to Be", duration: "3:58", file: "audio/4. The Man I'm Trying to Be.mp3" },
+            { title: "26 (Reprise)", duration: "4:23", file: "audio/5. The Man I'm Trying to Be.mp3" }
+        ];
+        
+        let currentSongIndex = 0;
+        let isPlaying = false;
+        const audioElement = new Audio();
+        
+        // Platform URLs
+        const platformUrls = {
+            spotify: 'https://open.spotify.com/album/YOUR_ALBUM_ID',
+            apple: 'https://music.apple.com/YOUR_ALBUM_ID',
+            youtube: 'https://music.youtube.com/YOUR_ALBUM_ID',
+            tidal: 'https://tidal.com/browse/album/YOUR_ALBUM_ID',
+            amazon: 'https://www.amazon.com/music/YOUR_ALBUM_ID',
+            deezer: 'https://www.deezer.com/en/album/YOUR_ALBUM_ID',
+            soundcloud: 'https://soundcloud.com/YOUR_ALBUM_ID',
+            bandcamp: 'https://www.bandcamp.com/YOUR_ALBUM_ID',
+            more: 'https://ramaahmadi.github.io/26-radira/'
+        };
+        
+        function showPlatforms() {
+            document.getElementById('platformsModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function hidePlatforms() {
+            document.getElementById('platformsModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function openPlatform(platform) {
+            if (platformUrls[platform]) {
+                window.open(platformUrls[platform], '_blank');
+            }
+        }
+        
+        function playPreview(index) {
+            currentSongIndex = index;
+            const song = songs[index];
+            
+            // Update current song display
+            document.getElementById('currentSong').textContent = song.title;
+            
+            // Load and play audio
+            audioElement.src = song.file;
+            audioElement.play();
+            isPlaying = true;
+            updatePlayIcon();
+            
+            // Show audio player
+            showAudioPlayer();
+            
+            // Auto stop after 30 seconds
+            setTimeout(() => {
+                if (isPlaying && currentSongIndex === index) {
+                    audioElement.pause();
+                    isPlaying = false;
+                    updatePlayIcon();
+                }
+            }, 30000);
+        }
+        
+        function showAudioPlayer() {
+            const player = document.getElementById('audioPlayer');
+            player.classList.remove('translate-y-full');
+        }
+        
+        function closeAudioPlayer() {
+            const player = document.getElementById('audioPlayer');
+            player.classList.add('translate-y-full');
+            audioElement.pause();
+            isPlaying = false;
+            updatePlayIcon();
+        }
+        
+        function togglePlay() {
+            if (isPlaying) {
+                audioElement.pause();
+                isPlaying = false;
+            } else {
+                audioElement.play();
+                isPlaying = true;
+            }
+            updatePlayIcon();
+        }
+        
+        function updatePlayIcon() {
+            const icon = document.getElementById('playIcon');
+            if (isPlaying) {
+                icon.classList.remove('fa-play');
+                icon.classList.add('fa-pause');
+            } else {
+                icon.classList.remove('fa-pause');
+                icon.classList.add('fa-play');
+            }
+        }
+        
+        function previousTrack() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            playPreview(currentSongIndex);
+        }
+        
+        function nextTrack() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            playPreview(currentSongIndex);
+        }
+        
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('platformsModal');
+            const modalContent = event.target.closest('.max-w-sm');
+            
+            if (modal && !modal.classList.contains('hidden') && !modalContent && !event.target.closest('button[onclick="showPlatforms()"]')) {
+                hidePlatforms();
+            }
+        });
+        
+        // Add touch interactions for better mobile experience
+        document.addEventListener('touchstart', function() {
+            // Add haptic feedback simulation
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        });
+    </script>
+</body>
+</html>
