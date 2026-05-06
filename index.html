@@ -148,10 +148,6 @@
                     <a href="#platforms" class="hover:text-gray-300 transition" data-key="nav.platforms">Platforms</a>
                     <a href="#songs" class="hover:text-gray-300 transition" data-key="nav.preview">Preview</a>
                     <a href="#albumStory" class="hover:text-gray-300 transition" data-key="nav.albumStory">Album Story</a>
-                    <a href="instagram-story.html" target="_blank" class="hover:text-gray-300 transition flex items-center">
-                        <i class="fab fa-instagram mr-1"></i>
-                        <span data-key="nav.instagramStory">IG Story</span>
-                    </a>
                     <div class="relative">
                         <button onclick="toggleLanguageMenu()" class="hover:text-gray-300 transition flex items-center">
                             <i class="fas fa-globe mr-2"></i>
@@ -194,10 +190,6 @@
             <a href="#platforms" onclick="toggleMenu()" class="hover:text-gray-500" data-key="nav.platforms">Platforms</a>
             <a href="#songs" onclick="toggleMenu()" class="hover:text-gray-500" data-key="nav.preview">Preview</a>
             <a href="#albumStory" onclick="toggleMenu()" class="hover:text-gray-500" data-key="nav.albumStory">Album Story</a>
-            <a href="instagram-story.html" target="_blank" onclick="toggleMenu()" class="hover:text-gray-500 flex items-center">
-                <i class="fab fa-instagram mr-1"></i>
-                <span data-key="nav.instagramStory">IG Story</span>
-            </a>
         </div>
     </div>
 
@@ -264,6 +256,11 @@
                 <button onclick="openPlatformPopup()" class="bg-purple-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-purple-700 transition transform hover:scale-105 text-lg">
                     <i class="fas fa-globe-americas mr-3"></i>
                     <span data-key="platforms.viewAll">View All Platforms (48+)</span>
+                </button>
+                
+                <button onclick="shareToInstagramStory()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-full font-semibold hover:from-purple-700 hover:to-pink-700 transition transform hover:scale-105 text-lg mt-4">
+                    <i class="fab fa-instagram mr-3"></i>
+                    <span data-key="platforms.shareInstagram">Share to Instagram Story</span>
                 </button>
                 
                 <div class="mt-12">
@@ -1045,6 +1042,7 @@
                 'platforms.title': 'Listen to Album "26"',
                 'platforms.subtitle': 'Available on your favorite streaming platforms',
                 'platforms.viewAll': 'View All Platforms (48+)',
+                'platforms.shareInstagram': 'Share to Instagram Story',
                 'platforms.description': 'Get best experience by listening to full album on your preferred platform',
                 'platforms.albumInfo': '🎵 Album "26" - Stories of Resilience',
                 'platforms.songCount': '5 inspiring songs about growth and resilience',
@@ -1080,6 +1078,7 @@
                 'platforms.title': 'Dengarkan Album "26"',
                 'platforms.subtitle': 'Tersedia di platform streaming favorit Anda',
                 'platforms.viewAll': 'Lihat Semua Platform (48+)',
+                'platforms.shareInstagram': 'Share ke Instagram Story',
                 'platforms.description': 'Dapatkan pengalaman terbaik dengan mendengarkan full album di platform pilihan Anda',
                 'platforms.albumInfo': '🎵 Album "26" - Stories of Resilience',
                 'platforms.songCount': '5 lagu yang menginspirasi tentang pertumbuhan dan ketahanan',
@@ -1216,6 +1215,48 @@
                 closePlatformPopup();
             }
         });
+
+        // Share to Instagram Story function
+        function shareToInstagramStory() {
+            const shareData = {
+                title: 'Album 26 - Stories of Resilience',
+                text: '🎵 Album 26 - Stories of Resilience\n🎧 5 inspiring songs about growth\n📱 Available on 48+ streaming platforms\n🔗 ' + window.location.href,
+                url: window.location.href
+            };
+            
+            // Try to use Web Share API
+            if (navigator.share) {
+                navigator.share(shareData).then(() => {
+                    console.log('Successfully shared to Instagram Story');
+                }).catch((error) => {
+                    console.log('Share failed:', error);
+                    // Fallback to Instagram app
+                    openInstagramDirectly();
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                openInstagramDirectly();
+            }
+        }
+        
+        function openInstagramDirectly() {
+            // Create Instagram Story URL with pre-filled content
+            const text = encodeURIComponent('🎵 Album 26 - Stories of Resilience\n🎧 5 inspiring songs about growth\n📱 Available on 48+ streaming platforms\n🔗 ' + window.location.href);
+            
+            // Try multiple methods to open Instagram
+            const instagramUrls = [
+                `https://www.instagram.com/create/story/?text=${text}`,
+                `instagram://story?text=${text}`,
+                `https://instagram.com/create/story/?text=${text}`
+            ];
+            
+            // Try each URL until one works
+            instagramUrls.forEach((url, index) => {
+                setTimeout(() => {
+                    window.open(url, '_blank');
+                }, index * 100); // Stagger attempts
+            });
+        }
 
         // Add scroll animations
         window.addEventListener('scroll', function() {
