@@ -141,13 +141,28 @@
         <nav class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="text-2xl font-bold">
-                    <i class="fas fa-heart mr-2"></i>26
+                    <i class="fas fa-music mr-2"></i>26
                 </div>
                 <div class="hidden md:flex space-x-6">
-                    <a href="#home" class="hover:text-gray-300 transition">Beranda</a>
-                    <a href="#songs" class="hover:text-gray-300 transition">Lagu</a>
-                    <a href="#albumStory" class="hover:text-gray-300 transition">Kisah Album</a>
-                    <a href="#stories" class="hover:text-gray-300 transition">Cerita Lagu</a>
+                    <a href="#home" class="hover:text-gray-300 transition" data-key="nav.home">Home</a>
+                    <a href="#platforms" class="hover:text-gray-300 transition" data-key="nav.platforms">Platforms</a>
+                    <a href="#songs" class="hover:text-gray-300 transition" data-key="nav.preview">Preview</a>
+                    <a href="#albumStory" class="hover:text-gray-300 transition" data-key="nav.albumStory">Album Story</a>
+                    <div class="relative">
+                        <button onclick="toggleLanguageMenu()" class="hover:text-gray-300 transition flex items-center">
+                            <i class="fas fa-globe mr-2"></i>
+                            <span id="currentLang">EN</span>
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div id="languageMenu" class="absolute right-0 mt-2 w-32 bg-gray-800 rounded-lg shadow-lg hidden z-50">
+                            <button onclick="setLanguage('en')" class="w-full text-left px-4 py-2 hover:bg-gray-700 transition rounded-t-lg">
+                                <i class="fas fa-flag mr-2"></i>English
+                            </button>
+                            <button onclick="setLanguage('id')" class="w-full text-left px-4 py-2 hover:bg-gray-700 transition rounded-b-lg">
+                                <i class="fas fa-flag mr-2"></i>Bahasa Indonesia
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <button class="md:hidden" onclick="toggleMenu()">
                     <i class="fas fa-bars text-2xl"></i>
@@ -156,13 +171,25 @@
         </nav>
     </header>
 
+    <!-- Mobile Language Buttons -->
+    <div class="md:hidden fixed top-20 right-6 z-40">
+        <div class="flex space-x-2">
+            <button onclick="setLanguage('en')" class="px-3 py-2 bg-gray-800 bg-opacity-90 rounded-lg hover:bg-gray-700 transition text-sm">
+                <i class="fas fa-flag mr-1"></i>EN
+            </button>
+            <button onclick="setLanguage('id')" class="px-3 py-2 bg-gray-800 bg-opacity-90 rounded-lg hover:bg-gray-700 transition text-sm">
+                <i class="fas fa-flag mr-1"></i>ID
+            </button>
+        </div>
+    </div>
+
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-90 z-40 hidden">
         <div class="flex flex-col items-center justify-center h-full space-y-8 text-2xl">
-            <a href="#home" onclick="toggleMenu()" class="hover:text-gray-500">Beranda</a>
-            <a href="#songs" onclick="toggleMenu()" class="hover:text-gray-500">Lagu</a>
-            <a href="#albumStory" onclick="toggleMenu()" class="hover:text-gray-500">Kisah Album</a>
-            <a href="#stories" onclick="toggleMenu()" class="hover:text-gray-500">Cerita Lagu</a>
+            <a href="#home" onclick="toggleMenu()" class="hover:text-gray-500" data-key="nav.home">Home</a>
+            <a href="#platforms" onclick="toggleMenu()" class="hover:text-gray-500" data-key="nav.platforms">Platforms</a>
+            <a href="#songs" onclick="toggleMenu()" class="hover:text-gray-500" data-key="nav.preview">Preview</a>
+            <a href="#albumStory" onclick="toggleMenu()" class="hover:text-gray-500" data-key="nav.albumStory">Album Story</a>
         </div>
     </div>
 
@@ -207,22 +234,83 @@
                 </div>
             </div>
             <h1 class="text-5xl md:text-7xl font-bold mb-6">26</h1>
-            <p class="text-xl md:text-2xl mb-8 text-gray-300">Stories of Resilience & Survival</p>
+            <p class="text-xl md:text-2xl mb-8 text-gray-300" data-key="hero.subtitle">Stories of Resilience & Survival</p>
             <div class="flex justify-center space-x-4">
-                <button onclick="scrollToSection('songs')" class="bg-gray-800 text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-700 transition border border-gray-600">
-                    <i class="fas fa-play mr-2"></i>Dengarkan Sekarang
+                <button onclick="scrollToSection('platforms')" class="bg-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-purple-700 transition border border-purple-500" data-key="hero.listenPlatforms">
+                    <i class="fas fa-music mr-2"></i>Listen on Platforms
                 </button>
-                <button onclick="scrollToSection('stories')" class="border-2 border-gray-400 px-8 py-3 rounded-full font-semibold hover:bg-gray-800 hover:text-white transition">
-                    <i class="fas fa-book mr-2"></i>Baca Cerita
+                <button onclick="scrollToSection('songs')" class="border-2 border-gray-400 px-8 py-3 rounded-full font-semibold hover:bg-gray-800 hover:text-white transition" data-key="hero.previewSongs">
+                    <i class="fas fa-headphones mr-2"></i>Preview Songs
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Songs Section -->
+    <!-- Music Platforms Section -->
+    <section id="platforms" class="py-20 px-6 bg-black bg-opacity-30">
+        <div class="container mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-8" data-key="platforms.title">Listen to Album "26"</h2>
+            <p class="text-xl text-center text-gray-300 mb-16" data-key="platforms.subtitle">Available on your favorite streaming platforms</p>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <a href="https://open.spotify.com/album/YOUR_ALBUM_ID" target="_blank" class="bg-green-600 hover:bg-green-700 text-white rounded-xl p-6 text-center transition transform hover:scale-105">
+                        <i class="fab fa-spotify text-4xl mb-3"></i>
+                        <p class="font-semibold">Spotify</p>
+                    </a>
+                    
+                    <a href="https://music.apple.com/YOUR_ALBUM_ID" target="_blank" class="bg-gray-900 hover:bg-gray-800 text-white rounded-xl p-6 text-center transition transform hover:scale-105">
+                        <i class="fab fa-apple text-4xl mb-3"></i>
+                        <p class="font-semibold">Apple Music</p>
+                    </a>
+                    
+                    <a href="https://music.youtube.com/YOUR_ALBUM_ID" target="_blank" class="bg-red-600 hover:bg-red-700 text-white rounded-xl p-6 text-center transition transform hover:scale-105">
+                        <i class="fab fa-youtube text-4xl mb-3"></i>
+                        <p class="font-semibold">YouTube Music</p>
+                    </a>
+                    
+                    <a href="https://www.deezer.com/en/album/YOUR_ALBUM_ID" target="_blank" class="bg-purple-600 hover:bg-purple-700 text-white rounded-xl p-6 text-center transition transform hover:scale-105">
+                        <i class="fab fa-deezer text-4xl mb-3"></i>
+                        <p class="font-semibold">Deezer</p>
+                    </a>
+                    
+                    <a href="https://tidal.com/browse/album/YOUR_ALBUM_ID" target="_blank" class="bg-black hover:bg-gray-900 text-white rounded-xl p-6 text-center transition transform hover:scale-105 border border-gray-700">
+                        <i class="fas fa-water text-4xl mb-3"></i>
+                        <p class="font-semibold">Tidal</p>
+                    </a>
+                    
+                    <a href="https://www.amazon.com/music/YOUR_ALBUM_ID" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white rounded-xl p-6 text-center transition transform hover:scale-105">
+                        <i class="fab fa-amazon text-4xl mb-3"></i>
+                        <p class="font-semibold">Amazon Music</p>
+                    </a>
+                    
+                    <a href="https://soundcloud.com/YOUR_ALBUM_ID" target="_blank" class="bg-orange-500 hover:bg-orange-600 text-white rounded-xl p-6 text-center transition transform hover:scale-105">
+                        <i class="fab fa-soundcloud text-4xl mb-3"></i>
+                        <p class="font-semibold">SoundCloud</p>
+                    </a>
+                    
+                    <a href="https://www.bandcamp.com/YOUR_ALBUM_ID" target="_blank" class="bg-blue-500 hover:bg-blue-600 text-white rounded-xl p-6 text-center transition transform hover:scale-105">
+                        <i class="fab fa-bandcamp text-4xl mb-3"></i>
+                        <p class="font-semibold" data-key="platforms.bandcamp">Bandcamp</p>
+                    </a>
+                </div>
+                
+                <div class="mt-12 text-center">
+                    <p class="text-gray-300 mb-4" data-key="platforms.description">Get the best experience by listening to the full album on your preferred platform</p>
+                    <div class="bg-purple-900 bg-opacity-30 rounded-xl p-6 max-w-2xl mx-auto">
+                        <p class="text-lg font-semibold mb-2" data-key="platforms.albumInfo">🎵 Album "26" - Stories of Resilience</p>
+                        <p class="text-gray-300" data-key="platforms.songCount">5 inspiring songs about growth and resilience</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Songs Preview Section -->
     <section id="songs" class="py-20 px-6">
         <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">Daftar Lagu</h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-8" data-key="songs.title">Song Previews</h2>
+            <p class="text-xl text-center text-gray-300 mb-16" data-key="songs.subtitle">Listen to 30-second previews of each song</p>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Song 1 -->
@@ -237,11 +325,8 @@
                         </div>
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <button class="play-button w-full bg-white bg-opacity-10 rounded-lg py-3 hover:bg-opacity-20 transition">
-                            <i class="fas fa-play mr-2"></i>Putar
-                        </button>
-                        <button onclick="showLyricsForSong(0)" class="w-full bg-gray-700 bg-opacity-50 rounded-lg py-2 hover:bg-opacity-70 transition">
-                            <i class="fas fa-align-left mr-2"></i>Lirik
+                        <button onclick="playSong(0)" class="play-button w-full bg-purple-600 bg-opacity-20 rounded-lg py-3 hover:bg-opacity-30 transition" data-key="songs.previewButton">
+                            <i class="fas fa-play mr-2"></i>Preview 30 Seconds
                         </button>
                     </div>
                 </div>
@@ -258,11 +343,8 @@
                         </div>
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <button class="play-button w-full bg-white bg-opacity-10 rounded-lg py-3 hover:bg-opacity-20 transition">
-                            <i class="fas fa-play mr-2"></i>Putar
-                        </button>
-                        <button onclick="showLyricsForSong(1)" class="w-full bg-gray-700 bg-opacity-50 rounded-lg py-2 hover:bg-opacity-70 transition">
-                            <i class="fas fa-align-left mr-2"></i>Lirik
+                        <button onclick="playSong(1)" class="play-button w-full bg-purple-600 bg-opacity-20 rounded-lg py-3 hover:bg-opacity-30 transition" data-key="songs.previewButton">
+                            <i class="fas fa-play mr-2"></i>Preview 30 Seconds
                         </button>
                     </div>
                 </div>
@@ -279,11 +361,8 @@
                         </div>
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <button class="play-button w-full bg-white bg-opacity-10 rounded-lg py-3 hover:bg-opacity-20 transition">
-                            <i class="fas fa-play mr-2"></i>Putar
-                        </button>
-                        <button onclick="showLyricsForSong(2)" class="w-full bg-gray-700 bg-opacity-50 rounded-lg py-2 hover:bg-opacity-70 transition">
-                            <i class="fas fa-align-left mr-2"></i>Lirik
+                        <button onclick="playSong(2)" class="play-button w-full bg-purple-600 bg-opacity-20 rounded-lg py-3 hover:bg-opacity-30 transition" data-key="songs.previewButton">
+                            <i class="fas fa-play mr-2"></i>Preview 30 Seconds
                         </button>
                     </div>
                 </div>
@@ -300,11 +379,8 @@
                         </div>
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <button class="play-button w-full bg-white bg-opacity-10 rounded-lg py-3 hover:bg-opacity-20 transition">
-                            <i class="fas fa-play mr-2"></i>Putar
-                        </button>
-                        <button onclick="showLyricsForSong(3)" class="w-full bg-gray-700 bg-opacity-50 rounded-lg py-2 hover:bg-opacity-70 transition">
-                            <i class="fas fa-align-left mr-2"></i>Lirik
+                        <button onclick="playSong(3)" class="play-button w-full bg-purple-600 bg-opacity-20 rounded-lg py-3 hover:bg-opacity-30 transition" data-key="songs.previewButton">
+                            <i class="fas fa-play mr-2"></i>Preview 30 Seconds
                         </button>
                     </div>
                 </div>
@@ -321,11 +397,8 @@
                         </div>
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <button class="play-button w-full bg-white bg-opacity-10 rounded-lg py-3 hover:bg-opacity-20 transition">
-                            <i class="fas fa-play mr-2"></i>Putar
-                        </button>
-                        <button onclick="showLyricsForSong(4)" class="w-full bg-gray-700 bg-opacity-50 rounded-lg py-2 hover:bg-opacity-70 transition">
-                            <i class="fas fa-align-left mr-2"></i>Lirik
+                        <button onclick="playSong(4)" class="play-button w-full bg-purple-600 bg-opacity-20 rounded-lg py-3 hover:bg-opacity-30 transition" data-key="songs.previewButton">
+                            <i class="fas fa-play mr-2"></i>Preview 30 Seconds
                         </button>
                     </div>
                 </div>
@@ -336,23 +409,23 @@
     <!-- Album Story Section -->
     <section id="albumStory" class="py-20 px-6 bg-black bg-opacity-20">
         <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-8">The Journey of 26</h2>
-            <p class="text-xl text-center text-gray-300 mb-16">A Complete Story in Five Chapters</p>
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-8" data-key="story.title">The Journey of 26</h2>
+            <p class="text-xl text-center text-gray-300 mb-16" data-key="story.subtitle">A Complete Story in Five Chapters</p>
             
             <div class="max-w-4xl mx-auto">
                 <div class="song-card rounded-2xl p-8 mb-12">
-                    <h3 class="text-2xl font-bold mb-6 text-gray-300">The Complete Narrative</h3>
+                    <h3 class="text-2xl font-bold mb-6 text-gray-300" data-key="story.narrativeTitle">The Complete Narrative</h3>
                     
                     <div class="space-y-6 text-lg leading-relaxed">
-                        <p>
-                            Album "26" adalah sebuah perjalanan lengkap dari seorang pemuda yang menghadapi tantangan hidup, 
-                            memproses pengalaman, dan akhirnya menemukan kedamaian dalam dirinya sendiri. Ini adalah kisah 
-                            universal tentang pertumbuhan yang bisa dialami oleh siapa saja, dari segala usia dan latar belakang.
+                        <p data-key="story.narrative">
+                            Album "26" is a complete journey of a young person facing life's challenges, 
+                            processing experiences, and finally finding peace within themselves. This is a 
+                            universal story about growth that can be experienced by anyone, of any age and background.
                         </p>
                         
                         <div class="border-l-4 border-gray-600 pl-6 py-4">
-                            <h4 class="text-xl font-semibold mb-3 text-gray-300">📖 Bab 1: Grew Up Before Recess</h4>
-                            <p class="mb-3">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-300" data-key="story.chapter1">📖 Bab 1: Grew Up Before Recess</h4>
+                            <p class="mb-3" data-key="story.chapter1Text">
                                 Perjalanan dimulai dengan momen di mana kita harus belajar hal-hal baru lebih cepat dari yang diharapkan. 
                                 Tanggung jawab datang lebih awal, tantangan membuat kita matang lebih cepat, dan kita mulai menyadari 
                                 bahwa hidup tidak selalu sesederhana yang kita pikirkan.
@@ -363,8 +436,8 @@
                         </div>
                         
                         <div class="border-l-4 border-gray-600 pl-6 py-4">
-                            <h4 class="text-xl font-semibold mb-3 text-gray-300">📖 Bab 2: 26</h4>
-                            <p class="mb-3">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-300" data-key="story.chapter2">📖 Bab 2: 26</h4>
+                            <p class="mb-3" data-key="story.chapter2Text">
                                 Di usia 26, kita mencapai titik di mana kita mulai mengevaluasi kembali arah perjalanan hidup. 
                                 Ada perasaan sudah cukup dewasa, tapi juga sadar bahwa masih banyak yang perlu dipelajari. 
                                 Kita mulai memahami bahwa setiap orang memiliki perjuangan internal yang tidak terlihat orang lain.
@@ -375,10 +448,11 @@
                         </div>
                         
                         <div class="border-l-4 border-gray-600 pl-6 py-4">
-                            <h4 class="text-xl font-semibold mb-3 text-gray-300">📖 Bab 3: Not That Boy</h4>
-                            <p class="mb-3">
-                                Di bab ini, kita memutuskan untuk tidak lagi menjadi versi diri yang lama. Ini adalah momen transformasi 
-                                di mana kita menyadari bahwa kita punya kekuatan untuk memilih bagaimana merespons kehidupan. 
+                            <h4 class="text-xl font-semibold mb-3 text-gray-300" data-key="story.chapter3">📖 Bab 3: Not That Boy</h4>
+                            <p class="mb-3" data-key="story.chapter3Text">
+                                Di bab ini, kita memutuskan untuk tidak lagi menjadi versi diri yang lama. 
+                                Ini adalah momen transformasi di mana kita menyadari bahwa kita punya kekuatan untuk memilih 
+                                bagaimana merespons kehidupan. 
                                 Masa lalu adalah guru, bukan penjara yang membatasi kita.
                             </p>
                             <p class="text-gray-400 italic">
@@ -387,8 +461,8 @@
                         </div>
                         
                         <div class="border-l-4 border-gray-600 pl-6 py-4">
-                            <h4 class="text-xl font-semibold mb-3 text-gray-300">📖 Bab 4: New Man, New Me</h4>
-                            <p class="mb-3">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-300" data-key="story.chapter4">📖 Bab 4: New Man, New Me</h4>
+                            <p class="mb-3" data-key="story.chapter4Text">
                                 Transformasi mencapai puncaknya di sini. Kita belajar menerima semua bagian dari perjalanan hidup, 
                                 menghargai versi diri yang lebih muda karena telah melakukan yang terbaik, dan menyadari bahwa 
                                 setiap bekas luka adalah bukti bahwa kita telah bertahan.
@@ -399,11 +473,11 @@
                         </div>
                         
                         <div class="border-l-4 border-gray-600 pl-6 py-4">
-                            <h4 class="text-xl font-semibold mb-3 text-gray-300">📖 Bab 5: The Man I'm Trying to Be</h4>
-                            <p class="mb-3">
-                                Perjalanan berakhir dengan kesadaran bahwa pertumbuhan adalah proses seumur hidup. Kita semua 
-                                sedang belajar menjadi versi terbaik dari diri kita, belajar memahami hal-hal kompleks dalam hidup, 
-                                dan menemukan bahwa kita tidak perlu sempurna untuk bahagia.
+                            <h4 class="text-xl font-semibold mb-3 text-gray-300" data-key="story.chapter5">📖 Bab 5: The Man I'm Trying to Be</h4>
+                            <p class="mb-3" data-key="story.chapter5Text">
+                                Perjalanan berakhir dengan kesadaran bahwa pertumbuhan adalah proses seumur hidup. 
+                                Kita semua sedang belajar menjadi versi terbaik dari diri kita, belajar memahami hal-hal kompleks 
+                                dalam hidup, dan menemukan bahwa kita tidak perlu sempurna untuk bahagia.
                             </p>
                             <p class="text-gray-400 italic">
                                 "We are all works in progress, and that's what makes life beautiful."
@@ -411,8 +485,8 @@
                         </div>
                         
                         <div class="mt-8 p-6 bg-gray-800 bg-opacity-30 rounded-xl">
-                            <h4 class="text-xl font-semibold mb-3 text-center text-gray-300">💫 Pesan Akhir Album</h4>
-                            <p class="text-center leading-relaxed">
+                            <h4 class="text-xl font-semibold mb-3 text-center text-gray-300" data-key="story.finalMessage">💫 Pesan Akhir Album</h4>
+                            <p class="text-center leading-relaxed" data-key="story.finalMessageText">
                                 Album "26" mengajarkan kita bahwa setiap tahap kehidupan memiliki nilainya sendiri. 
                                 Dari masa muda yang penuh pertanyaan hingga dewasa yang penuh pemahaman, 
                                 kita semua sedang dalam perjalanan untuk menjadi lebih baik setiap hari. 
@@ -425,139 +499,13 @@
         </div>
     </section>
 
-    <!-- Individual Stories Section -->
-    <section id="stories" class="py-20 px-6">
-        <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">Deeper Into Each Chapter</h2>
-            
-            <div class="space-y-12 max-w-4xl mx-auto">
-                <!-- Story 1 -->
-                <div class="song-card rounded-2xl p-8 fade-in">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-300">Grew Up Before Recess</h3>
-                    <p class="text-lg leading-relaxed mb-4">
-                        Lagu ini adalah tentang momen-momen dalam hidup ketika kita harus belajar hal-hal baru lebih cepat dari 
-                        yang kita harapkan. Bisa jadi tentang tanggung jawab yang datang lebih awal, atau tentang 
-                        menghadapi tantangan yang membuat kita matang lebih cepat dari teman sebaya.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "Cold fries" dan "hands still dirty" adalah metafora tentang bagaimana kadang-kadang kita terlalu 
-                        fokus pada masalah besar sampai lupa menikmati hal-hal sederhana. Lagu ini mengingatkan kita untuk 
-                        tetap menemukan kebahagiaan kecil bahkan di tengah kesulitan, dan bahwa setiap pengalaman 
-                        berat akan membentuk kita menjadi lebih kuat.
-                    </p>
-                    <p class="text-gray-400 italic">
-                        "Sometimes the greatest growth comes from the challenges we never expected."
-                    </p>
-                </div>
-
-                <!-- Story 2 -->
-                <div class="song-card rounded-2xl p-8 fade-in">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-300">26</h3>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I turn twenty-six, a quarter of a century" - lagu ini adalah refleksi tentang mencapai titik 
-                        dalam hidup di mana kita mulai mengevaluasi kembali arah perjalanan kita. Usia 26 sering menjadi 
-                        momen di mana kita merasa sudah cukup dewasa, tapi juga sadar bahwa masih banyak yang perlu dipelajari.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I've been through storms nobody ever sees" - ini tentang perjuangan internal yang setiap orang hadapi, 
-                        mulai dari kecemasan tentang masa depan, tekanan dari ekspektasi, hingga pertanyaan tentang 
-                        arti kesuksesan sejati. Lagu ini adalah pengingat bahwa kita tidak sendirian dalam perjuangan ini.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I'm not the past, I'm who I change" - ini adalah pesan harapan bahwa kita selalu punya 
-                        kesempatan untuk menjadi lebih baik setiap hari. Masa lalu adalah guru, bukan penjara, dan kita 
-                        memiliki kekuatan untuk menulis babak baru dalam hidup kita.
-                    </p>
-                    <p class="text-gray-400 italic">
-                        "Every age brings new wisdom, and every challenge brings new strength."
-                    </p>
-                </div>
-
-                <!-- Story 3 -->
-                <div class="song-card rounded-2xl p-8 fade-in">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-300">Not That Boy</h3>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I was just a child, didn't understand" - lagu ini adalah tentang perjalanan kita semua dalam 
-                        memahami diri sendiri dan dunia di sekitar kita. Setiap orang memiliki momen di mana kita merasa 
-                        tidak mengerti mengapa hal-hal tertentu terjadi dalam hidup, dan butuh waktu untuk mencerna semuanya.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I'm not that boy I was before" - ini adalah deklarasi tentang pertumbuhan dan transformasi. 
-                        Kita semua berubah seiring waktu, belajar dari pengalaman, dan menjadi versi diri yang lebih baik. 
-                        "Broken on that bedroom floor" bisa berarti momen terendah kita, tapi juga titik awal kebangkitan.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I didn't choose the pain I hold, but I can choose to let it go" - ini adalah pesan universal 
-                        tentang kekuatan pilihan. Kita tidak bisa mengubah apa yang terjadi, tapi kita selalu punya 
-                        kekuatan untuk memilih bagaimana kita meresponsnya. Lagu ini adalah tentang menemukan 
-                        kedamaian dan kekuatan dari dalam.
-                    </p>
-                    <p class="text-gray-400 italic">
-                        "Growth isn't about forgetting where we came from, it's about honoring how far we've come."
-                    </p>
-                </div>
-
-                <!-- Story 4 -->
-                <div class="song-card rounded-2xl p-8 fade-in">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-300">New Man, New Me</h3>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I don't hide from yesterday" - lagu ini adalah tentang kedamaian dengan perjalanan hidup kita. 
-                        Setiap orang memiliki masa lalu dengan suka dan duka, dan lagu ini mengajarkan kita untuk 
-                        menerima semua bagian dari perjalanan tersebut sebagai bagian dari pertumbuhan kita.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I'm a new man, new me" - ini adalah anthem tentang transformasi pribadi. Bisa jadi tentang 
-                        lulus sekolah, memulai pekerjaan baru, pindah ke kota lain, atau momen apa pun di mana kita 
-                        merasa menjadi versi diri yang lebih baik. "All the scars I used to fear, now they're just 
-                        the proof I'm here" mengajarkan bahwa bekas luka adalah tanda kita telah bertahan.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I don't hate the child I was, he was fighting just because he was trying to survive" - ini adalah 
-                        momen penuh belas kasih pada diri sendiri. Kita belajar untuk menghargai versi diri yang lebih muda 
-                        karena telah melakukan yang terbaik dengan pengetahuan yang dimiliki saat itu. Lagu ini adalah 
-                        tentang integrasi semua pengalaman menjadi kebijaksanaan.
-                    </p>
-                    <p class="text-gray-400 italic">
-                        "True transformation comes when we embrace all versions of ourselves."
-                    </p>
-                </div>
-
-                <!-- Story 5 -->
-                <div class="song-card rounded-2xl p-8 fade-in">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-300">The Man I'm Trying to Be</h3>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I was too young, didn't know what it meant" - lagu ini adalah tentang perjalanan belajar 
-                        memahami hal-hal kompleks dalam hidup, seperti cinta, persahabatan, atau tanggung jawab. Setiap 
-                        orang pernah merasa tidak mengerti sesuatu yang penting, dan butuh waktu dan pengalaman untuk 
-                        benar-benar memahaminya.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I didn't know how to be wanted, just how to let someone in" - ini bisa berarti banyak hal: 
-                        belajar membuka diri pada teman baru, mencoba menjadi bagian dari komunitas, atau bahkan 
-                        berani menunjukkan siapa diri kita sebenarnya. "She reaches for me and I want to stay, but part 
-                        of me runs in a different way" adalah konflik universal antara keinginan untuk terhubung dan 
-                        ketakutan akan penolakan.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-4">
-                        "I'm learning love isn't pressure, it's patient, steady, and true" - ini adalah kesimpulan 
-                        dari perjalanan album. Kita semua sedang belajar menjadi versi terbaik dari diri kita, belajar 
-                        mencintai dengan cara yang sehat, dan belajar bahwa pertumbuhan adalah proses seumur hidup. 
-                        Lagu ini memberikan harapan bahwa kita semua bisa menjadi lebih baik setiap hari.
-                    </p>
-                    <p class="text-gray-400 italic">
-                        "We are all works in progress, and that's what makes life beautiful."
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    
     
     <!-- Footer -->
     <footer class="bg-black bg-opacity-30 py-8 px-6">
         <div class="container mx-auto text-center">
-            <p class="text-purple-200">&copy; 2026 Journey of Sounds. All rights reserved.</p>
-            <p class="text-purple-300 mt-2">Made with <i class="fas fa-heart text-red-400"></i> for music lovers</p>
+            <p class="text-purple-200" data-key="footer.copyright">&copy; 2026 Journey of Sounds. All rights reserved.</p>
+            <p class="text-purple-300 mt-2" data-key="footer.madeWith">Made with <i class="fas fa-heart text-red-400"></i> for music lovers</p>
         </div>
     </footer>
 
@@ -590,9 +538,6 @@
                     </button>
                     <button onclick="nextTrack()" class="text-gray-300">
                         <i class="fas fa-step-forward"></i>
-                    </button>
-                    <button onclick="toggleLyrics()" class="text-gray-300">
-                        <i class="fas fa-align-left"></i>
                     </button>
                 </div>
                 
@@ -634,9 +579,6 @@
                     </div>
                     <span class="text-sm" id="totalTimeDesktop">0:00</span>
                 </div>
-                <button onclick="toggleLyrics()" class="hover:text-gray-300 transition mr-2">
-                    <i class="fas fa-align-left text-xl"></i>
-                </button>
                 <button onclick="closeAudioPlayer()" class="hover:text-gray-300 transition">
                     <i class="fas fa-times text-xl"></i>
                 </button>
@@ -646,26 +588,7 @@
         <audio id="audioElement" preload="metadata"></audio>
     </div>
 
-    <!-- Lyrics Display -->
-    <div id="lyricsDisplay" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden overflow-y-auto">
-        <div class="container mx-auto px-6 py-8">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-bold text-white" id="lyricsTitle">Song Lyrics</h2>
-                <button onclick="toggleLyrics()" class="text-white hover:text-gray-300 transition">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
-            </div>
-            
-            <div class="max-w-4xl mx-auto">
-                <div class="song-card rounded-2xl p-8">
-                    <div id="lyricsContent" class="space-y-6 text-lg leading-relaxed">
-                        <!-- Lyrics will be inserted here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
     <script>
         // Mobile menu toggle
         function toggleMenu() {
@@ -691,27 +614,36 @@
             { title: "The Man I'm Trying to Be", duration: "3:28", file: "audio/5. The Man I'm Trying to Be.mp3", lyrics: { verse1: "I was too young\nDidn't know what it meant\nThought it was love\nBut it never made sense\nHe took my trust\nBefore I had a choice\nLeft me learning love\nThrough a broken voice\n\nI carried it forward\nLike it was normal to feel\nThat love meant giving up\nEvery part of me that's real", chorus: "I can't describe about this feeling\nAs something I had to give\nI didn't know how to be wanted\nJust how to let someone in\nBut I'm trying to change the meaning\nOf what I was taught to believe\nI want to learn how to love her\nWithout losing all of me", verse2: "Now I'm older\nAnd I understand\nWhat happened to me\nWas never in my hands\nI've said the words\nI've faced the truth\nBut my skin still reacts\nLike I'm back in that room\n\nShe reaches for me\nAnd I want to stay\nBut part of me runs\nIn a different way", chorus2: "I can't describe about this feeling\nAs something I had to give\nI didn't know how to be present\nJust how to relive it again\nBut I'm trying to change the meaning\nOf what I was taught to believe\nI want to learn how to love her\nWithout losing all of me", bridge: "I want a future\nThat isn't built on fear\nI want to hold her\nAnd really be here\nNot just a memory\nNot just a past\nBut someone who's learning\nA love that can last", finalChorus: "I'm learning love isn't pressure\nIt's patient, steady, and true\nI'm learning I can be different\nFrom what I've been through\nI'm not just made of my history\nIt doesn't decide who I'll be\nI'm learning how to love her\nAnd finally be free" } },
         ];
 
+        let previewTimer;
+        const PREVIEW_DURATION = 30; // 30 seconds preview
+        
         function playSong(index) {
             currentTrackIndex = index;
             const song = songs[index];
             
+            // Clear any existing preview timer
+            if (previewTimer) {
+                clearTimeout(previewTimer);
+            }
+            
             // Update UI for both mobile and desktop
             const isMobile = window.innerWidth < 768;
             if (isMobile) {
-                document.getElementById('currentSong').textContent = song.title;
-                document.getElementById('totalTime').textContent = song.duration;
+                document.getElementById('currentSong').textContent = song.title + ' (Preview)';
+                document.getElementById('totalTime').textContent = '0:30';
             } else {
-                document.getElementById('currentSongDesktop').textContent = song.title;
-                document.getElementById('totalTimeDesktop').textContent = song.duration;
+                document.getElementById('currentSongDesktop').textContent = song.title + ' (Preview)';
+                document.getElementById('totalTimeDesktop').textContent = '0:30';
             }
             
             // Clear previous event listeners
             audioElement.removeEventListener('error', handleAudioError);
             audioElement.removeEventListener('canplay', handleAudioCanPlay);
+            audioElement.removeEventListener('timeupdate', handleTimeUpdate);
             
             // Load and play audio with absolute path
             const audioPath = window.location.origin + '/' + song.file;
-            console.log('Attempting to load audio from:', audioPath);
+            console.log('Attempting to load preview audio from:', audioPath);
             
             audioElement.src = audioPath;
             audioElement.load();
@@ -730,18 +662,48 @@
                     audioElement.src = song.file;
                     audioElement.load();
                 } else {
-                    alert('Audio file tidak dapat dimuat. File: ' + song.file + '\nSilakan periksa koneksi internet Anda.');
+                    alert('Preview audio tidak dapat dimuat. File: ' + song.file + '\nSilakan dengarkan full version di platform streaming.');
                 }
             }
             
             function handleAudioCanPlay() {
-                console.log('Audio ready to play:', audioElement.src);
+                console.log('Preview audio ready to play:', audioElement.src);
                 updatePlayIcon();
-                updateLyricsForCurrentSong();
+                
+                // Start from beginning for preview
+                audioElement.currentTime = 0;
+                
+                // Auto-play after loading
+                audioElement.play().then(_ => {
+                    console.log('Preview playing successfully');
+                    isPlaying = true;
+                    updatePlayIcon();
+                    
+                    // Set timer to stop after 30 seconds
+                    previewTimer = setTimeout(() => {
+                        audioElement.pause();
+                        isPlaying = false;
+                        updatePlayIcon();
+                        console.log('Preview ended after 30 seconds');
+                    }, PREVIEW_DURATION * 1000);
+                }).catch(error => {
+                    console.error('Preview play failed:', error);
+                    isPlaying = false;
+                });
+            }
+            
+            function handleTimeUpdate() {
+                if (audioElement.currentTime >= PREVIEW_DURATION) {
+                    audioElement.pause();
+                    isPlaying = false;
+                    updatePlayIcon();
+                    console.log('Preview ended at 30 seconds');
+                }
             }
             
             audioElement.addEventListener('error', handleAudioError);
             audioElement.addEventListener('canplay', handleAudioCanPlay, { once: true });
+            audioElement.addEventListener('timeupdate', handleTimeUpdate);
         }
 
         function showAudioPlayer() {
@@ -795,143 +757,35 @@
             playSong(currentTrackIndex);
         }
 
-        // Update progress bar
+        // Update progress bar for preview
         audioElement.addEventListener('timeupdate', function() {
-            if (audioElement.duration) {
-                const progress = (audioElement.currentTime / audioElement.duration) * 100;
-                const isMobile = window.innerWidth < 768;
-                
-                if (isMobile) {
-                    document.getElementById('progressBar').style.width = progress + '%';
-                } else {
-                    document.getElementById('progressBarDesktop').style.width = progress + '%';
-                }
-                
-                const currentMinutes = Math.floor(audioElement.currentTime / 60);
-                const currentSeconds = Math.floor(audioElement.currentTime % 60);
-                const timeString = `${currentMinutes}:${currentSeconds.toString().padStart(2, '0')}`;
-                
-                if (isMobile) {
-                    document.getElementById('currentTime').textContent = timeString;
-                } else {
-                    document.getElementById('currentTimeDesktop').textContent = timeString;
-                }
+            // Use PREVIEW_DURATION for progress calculation
+            const duration = Math.min(audioElement.duration || PREVIEW_DURATION, PREVIEW_DURATION);
+            const currentTime = Math.min(audioElement.currentTime, PREVIEW_DURATION);
+            const progress = (currentTime / duration) * 100;
+            const isMobile = window.innerWidth < 768;
+            
+            if (isMobile) {
+                document.getElementById('progressBar').style.width = progress + '%';
+            } else {
+                document.getElementById('progressBarDesktop').style.width = progress + '%';
+            }
+            
+            const currentMinutes = Math.floor(currentTime / 60);
+            const currentSeconds = Math.floor(currentTime % 60);
+            const timeString = `${currentMinutes}:${currentSeconds.toString().padStart(2, '0')}`;
+            
+            if (isMobile) {
+                document.getElementById('currentTime').textContent = timeString;
+            } else {
+                document.getElementById('currentTimeDesktop').textContent = timeString;
             }
         });
 
-        // Auto play next track
+        // Auto play next preview track
         audioElement.addEventListener('ended', function() {
             nextTrack();
         });
-
-        // Lyrics functionality
-        let lyricsVisible = false;
-
-        function toggleLyrics() {
-            const lyricsDisplay = document.getElementById('lyricsDisplay');
-            lyricsVisible = !lyricsVisible;
-            
-            if (lyricsVisible) {
-                showLyrics();
-                lyricsDisplay.classList.remove('hidden');
-            } else {
-                lyricsDisplay.classList.add('hidden');
-            }
-        }
-
-        function showLyrics() {
-            const song = songs[currentTrackIndex];
-            const lyricsTitle = document.getElementById('lyricsTitle');
-            const lyricsContent = document.getElementById('lyricsContent');
-            
-            lyricsTitle.textContent = song.title + ' - Lyrics';
-            
-            let lyricsHTML = '';
-            const lyrics = song.lyrics;
-            
-            if (lyrics.verse1) {
-                lyricsHTML += `
-                    <div class="mb-6">
-                        <h4 class="text-xl font-semibold mb-3 text-gray-300">Verse 1</h4>
-                        <p class="whitespace-pre-line text-gray-100">${lyrics.verse1}</p>
-                    </div>
-                `;
-            }
-            
-            if (lyrics.preChorus) {
-                lyricsHTML += `
-                    <div class="mb-6">
-                        <h4 class="text-xl font-semibold mb-3 text-gray-300">Pre-Chorus</h4>
-                        <p class="whitespace-pre-line text-gray-100">${lyrics.preChorus}</p>
-                    </div>
-                `;
-            }
-            
-            if (lyrics.chorus) {
-                lyricsHTML += `
-                    <div class="mb-6">
-                        <h4 class="text-xl font-semibold mb-3 text-gray-300">Chorus</h4>
-                        <p class="whitespace-pre-line text-gray-100 font-medium">${lyrics.chorus}</p>
-                    </div>
-                `;
-            }
-            
-            if (lyrics.verse2) {
-                lyricsHTML += `
-                    <div class="mb-6">
-                        <h4 class="text-xl font-semibold mb-3 text-gray-300">Verse 2</h4>
-                        <p class="whitespace-pre-line text-gray-100">${lyrics.verse2}</p>
-                    </div>
-                `;
-            }
-            
-            if (lyrics.bridge) {
-                lyricsHTML += `
-                    <div class="mb-6">
-                        <h4 class="text-xl font-semibold mb-3 text-gray-300">Bridge</h4>
-                        <p class="whitespace-pre-line text-gray-100">${lyrics.bridge}</p>
-                    </div>
-                `;
-            }
-            
-            lyricsContent.innerHTML = lyricsHTML;
-        }
-
-        function updateLyricsForCurrentSong() {
-            if (lyricsVisible) {
-                showLyrics();
-            }
-        }
-
-        function showLyricsForSong(songIndex) {
-            currentTrackIndex = songIndex;
-            const song = songs[songIndex];
-            
-            // Update UI
-            const isMobile = window.innerWidth < 768;
-            if (isMobile) {
-                document.getElementById('currentSong').textContent = song.title;
-                document.getElementById('totalTime').textContent = song.duration;
-            } else {
-                document.getElementById('currentSongDesktop').textContent = song.title;
-                document.getElementById('totalTimeDesktop').textContent = song.duration;
-            }
-            
-            // Load audio with absolute path
-            const audioPath = window.location.origin + '/' + song.file;
-            console.log('Loading audio for lyrics:', audioPath);
-            
-            audioElement.src = audioPath;
-            audioElement.load();
-            
-            // Show lyrics
-            lyricsVisible = true;
-            showLyrics();
-            document.getElementById('lyricsDisplay').classList.remove('hidden');
-            
-            // Show audio player
-            showAudioPlayer();
-        }
 
         // Add click handlers to play buttons
         document.addEventListener('DOMContentLoaded', function() {
@@ -939,6 +793,160 @@
             playButtons.forEach((button, index) => {
                 button.addEventListener('click', () => playSong(index));
             });
+        });
+
+        // Language switching functionality
+        const translations = {
+            'en': {
+                'nav.home': 'Home',
+                'nav.platforms': 'Platforms',
+                'nav.preview': 'Preview',
+                'nav.albumStory': 'Album Story',
+                'hero.subtitle': 'Stories of Resilience & Survival',
+                'hero.listenPlatforms': 'Listen on Platforms',
+                'hero.previewSongs': 'Preview Songs',
+                'platforms.title': 'Listen to Album "26"',
+                'platforms.subtitle': 'Available on your favorite streaming platforms',
+                'platforms.description': 'Get best experience by listening to full album on your preferred platform',
+                'platforms.albumInfo': '🎵 Album "26" - Stories of Resilience',
+                'platforms.songCount': '5 inspiring songs about growth and resilience',
+                'songs.title': 'Song Previews',
+                'songs.subtitle': 'Listen to 30-second previews of each song',
+                'songs.previewButton': 'Preview 30 Seconds',
+                'story.title': 'The Journey of 26',
+                'story.subtitle': 'A Complete Story in Five Chapters',
+                'story.narrativeTitle': 'The Complete Narrative',
+                'story.narrative': 'Album "26" is a complete journey of a young person facing life\'s challenges, processing experiences, and finally finding peace within themselves. This is a universal story about growth that can be experienced by anyone, of any age and background.',
+                'story.chapter1': '📖 Chapter 1: Grew Up Before Recess',
+                'story.chapter1Text': 'The journey begins with moments in life when we have to learn new things faster than expected. Responsibility comes earlier, challenges make us mature faster, and we start to realize that life is not always as simple as we thought.',
+                'story.chapter2': '📖 Chapter 2: 26',
+                'story.chapter2Text': 'At age 26, we reach a point where we start to re-evaluate the direction of our life journey. We feel mature enough, but also aware that there is still much to learn.',
+                'story.chapter3': '📖 Chapter 3: Not That Boy',
+                'story.chapter3Text': 'In this chapter, we decide not to be the old version of ourselves. This is a moment of transformation where we realize we have the power to choose how to respond to life.',
+                'story.chapter4': '📖 Chapter 4: New Man, New Me',
+                'story.chapter4Text': 'Transformation reaches its peak here. We learn to accept all parts of life\'s journey, appreciating the younger version of ourselves for doing their best.',
+                'story.chapter5': '📖 Chapter 5: The Man I\'m Trying to Be',
+                'story.chapter5Text': 'The journey ends with the realization that growth is a lifelong process. We are all learning to become the best version of ourselves.',
+                'story.finalMessage': 'Album "26" teaches us that every stage of life has its own value. From youth full of questions to adulthood full of understanding, we are all on a journey to become better every day.',
+                'footer.copyright': '© 2026 Journey of Sounds. All rights reserved.',
+                'footer.madeWith': 'Made with <i class="fas fa-heart text-red-400"></i> for music lovers'
+            },
+            'id': {
+                'nav.home': 'Beranda',
+                'nav.platforms': 'Platform',
+                'nav.preview': 'Preview',
+                'nav.albumStory': 'Kisah Album',
+                'hero.subtitle': 'Kisah Ketahanan & Kelangsungan Hidup',
+                'hero.listenPlatforms': 'Dengarkan di Platform',
+                'hero.previewSongs': 'Preview Lagu',
+                'platforms.title': 'Dengarkan Album "26"',
+                'platforms.subtitle': 'Tersedia di platform streaming favorit Anda',
+                'platforms.description': 'Dapatkan pengalaman terbaik dengan mendengarkan full album di platform pilihan Anda',
+                'platforms.albumInfo': '🎵 Album "26" - Stories of Resilience',
+                'platforms.songCount': '5 lagu yang menginspirasi tentang pertumbuhan dan ketahanan',
+                'songs.title': 'Preview Lagu',
+                'songs.subtitle': 'Dengarkan 30 detik preview dari setiap lagu',
+                'songs.previewButton': 'Preview 30 Detik',
+                'story.title': 'Perjalanan 26',
+                'story.subtitle': 'Kisah Lengkap dalam Lima Bab',
+                'story.narrativeTitle': 'Kisah Lengkap',
+                'story.narrative': 'Album "26" adalah sebuah perjalanan lengkap dari seorang pemuda yang menghadapi tantangan hidup, memproses pengalaman, dan akhirnya menemukan kedamaian dalam dirinya sendiri. Ini adalah Kisah universal tentang pertumbuhan yang bisa dialami oleh siapa saja, dari segala usia dan latar belakang.',
+                'story.chapter1': '📖 Bab 1: Grew Up Before Recess',
+                'story.chapter1Text': 'Perjalanan dimulai dengan momen di mana kita harus belajar hal-hal baru lebih cepat dari yang diharapkan. Tanggung jawab datang lebih awal, tantangan membuat kita matang lebih cepat, dan kita mulai menyadari bahwa hidup tidak selalu sesederhana yang kita pikirkan.',
+                'story.chapter2': '📖 Bab 2: 26',
+                'story.chapter2Text': 'Di usia 26, kita mencapai titik di mana kita mulai mengevaluasi kembali arah perjalanan hidup. Kita merasa sudah cukup dewasa, tapi juga sadar bahwa masih banyak yang perlu dipelajari.',
+                'story.chapter3': '📖 Bab 3: Not That Boy',
+                'story.chapter3Text': 'Di bab ini, kita memutuskan untuk tidak lagi menjadi versi diri yang lama. Ini adalah momen transformasi di mana kita menyadari bahwa kita punya kekuatan untuk memilih bagaimana merespons kehidupan.',
+                'story.chapter4': '📖 Bab 4: New Man, New Me',
+                'story.chapter4Text': 'Transformasi mencapai puncaknya di sini. Kita belajar menerima semua bagian dari perjalanan hidup, menghargai versi diri yang lebih muda karena telah melakukan yang terbaik.',
+                'story.chapter5': '📖 Bab 5: The Man I\'m Trying to Be',
+                'story.chapter5Text': 'Perjalanan berakhir dengan kesadaran bahwa pertumbuhan adalah proses seumur hidup. Kita semua sedang belajar menjadi versi terbaik dari diri kita.',
+                'story.finalMessage': 'Album "26" mengajarkan kita bahwa setiap tahap kehidupan memiliki nilainya sendiri. Dari masa muda yang penuh pertanyaan hingga dewasa yang penuh pemahaman, kita semua sedang dalam perjalanan untuk menjadi lebih baik setiap hari.',
+                'footer.copyright': '© 2026 Journey of Sounds. All rights reserved.',
+                'footer.madeWith': 'Dibuat dengan <i class="fas fa-heart text-red-400"></i> untuk para pecinta musik'
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function toggleLanguageMenu() {
+            const menu = document.getElementById('languageMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('currentLang').textContent = lang.toUpperCase();
+            
+            // Update all elements with data-key attribute
+            const elements = document.querySelectorAll('[data-key]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (key && translations[lang][key]) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+            
+            // Update navigation
+            updateNavigation(lang);
+            
+            // Close language menu
+            document.getElementById('languageMenu').classList.add('hidden');
+            
+            // Save preference
+            localStorage.setItem('preferredLanguage', lang);
+        }
+
+        function getElementKey(element) {
+            // Generate key based on element content and position
+            const text = element.textContent.trim();
+            const parentClass = element.parentElement?.className || '';
+            
+            if (text.includes('Home') || text.includes('Beranda')) return 'nav.home';
+            if (text.includes('Platform') || text.includes('Platforms')) return 'nav.platforms';
+            if (text.includes('Preview')) return 'nav.preview';
+            if (text.includes('Album Story') || text.includes('Kisah Album')) return 'nav.albumStory';
+            if (text.includes('Stories of Resilience')) return 'hero.subtitle';
+            if (text.includes('Listen on') || text.includes('Dengarkan di')) return 'hero.listenPlatforms';
+            if (text.includes('Preview Songs') || text.includes('Preview Lagu')) return 'hero.previewSongs';
+            if (text.includes('Listen to Album') || text.includes('Dengarkan Album')) return 'platforms.title';
+            if (text.includes('Available on') || text.includes('Tersedia di')) return 'platforms.subtitle';
+            if (text.includes('Get best experience')) return 'platforms.description';
+            if (text.includes('Song Previews') || text.includes('Preview Lagu')) return 'songs.title';
+            if (text.includes('Listen to 30-second') || text.includes('Dengarkan 30 detik')) return 'songs.subtitle';
+            if (text.includes('Preview 30')) return 'songs.previewButton';
+            if (text.includes('The Journey of 26') || text.includes('Perjalanan 26')) return 'story.title';
+            if (text.includes('Complete Story') || text.includes('Kisah Lengkap')) return 'story.subtitle';
+            if (text.includes('🎵 Album')) return 'platforms.albumInfo';
+            if (text.includes('5 inspiring') || text.includes('5 lagu')) return 'platforms.songCount';
+            
+            return null;
+        }
+
+        function updateNavigation(lang) {
+            const navLinks = document.querySelectorAll('nav a[data-lang="en"]');
+            navLinks.forEach(link => {
+                const key = getElementKey(link);
+                if (key && translations[lang][key]) {
+                    link.textContent = translations[lang][key];
+                }
+            });
+        }
+
+        // Initialize language from localStorage or default to English
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLanguage = localStorage.getItem('preferredLanguage') || 'en';
+            setLanguage(savedLanguage);
+        });
+
+        // Close language menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const languageMenu = document.getElementById('languageMenu');
+            const languageButton = event.target.closest('button[onclick="toggleLanguageMenu()"]');
+            
+            if (!languageButton && !languageMenu.contains(event.target)) {
+                languageMenu.classList.add('hidden');
+            }
         });
 
         // Add scroll animations
