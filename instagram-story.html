@@ -134,9 +134,15 @@
         
         <!-- CTA Section -->
         <div class="px-6 mb-6">
-            <button onclick="showPlatforms()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-2xl font-semibold text-lg pulse">
+            <button onclick="showPlatforms()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-2xl font-semibold text-lg pulse mb-3">
                 <i class="fas fa-music mr-2"></i>
                 Listen Now (48+ Platforms)
+            </button>
+            
+            <!-- Share Button -->
+            <button onclick="shareToInstagram()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-2xl font-semibold flex items-center justify-center">
+                <i class="fab fa-instagram mr-2"></i>
+                Share to Instagram Story
             </button>
         </div>
         
@@ -396,6 +402,45 @@
         function nextTrack() {
             currentSongIndex = (currentSongIndex + 1) % songs.length;
             playPreview(currentSongIndex);
+        }
+        
+        // Share to Instagram Story function
+        function shareToInstagram() {
+            // Check if Web Share API is supported
+            if (navigator.share) {
+                // Create share data for Instagram Story
+                const shareData = {
+                    title: 'Album 26 - Stories of Resilience',
+                    text: '🎵 Listen to Album 26 - 5 inspiring songs about growth and resilience. Available on 48+ streaming platforms!',
+                    url: window.location.href,
+                    // For Instagram Story, we can try to use the file approach
+                    files: null // We'll handle this differently for Instagram
+                };
+                
+                // Try to share with Instagram Story
+                navigator.share(shareData).then(() => {
+                    console.log('Successfully shared');
+                }).catch((error) => {
+                    console.log('Share failed:', error);
+                    // Fallback to Instagram app
+                    fallbackShare();
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                fallbackShare();
+            }
+        }
+        
+        function fallbackShare() {
+            // Create Instagram Story URL
+            const storyUrl = `https://www.instagram.com/create/story`;
+            const text = encodeURIComponent('🎵 Album 26 - Stories of Resilience\n🎧 5 inspiring songs about growth\n📱 Available on 48+ platforms\n🔗 ' + window.location.href);
+            
+            // Try to open Instagram with pre-filled text
+            const instagramUrl = `https://www.instagram.com/create/story/?text=${text}`;
+            
+            // Open in new window
+            window.open(instagramUrl, '_blank');
         }
         
         // Close modal when clicking outside
