@@ -1,0 +1,10 @@
+{
+  "name": "album-26",
+  "version": "1.0.0",
+  "description": "Album 26 - Stories of Resilience Website",
+  "scripts": {
+    "build": "echo 'No build step required for static site'"
+  },
+  "keywords": ["music", "album", "static-site"],
+  "author": "Rama Ahmadi"
+}

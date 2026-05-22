@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album 26 - Stories of Resilience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        .card-hover {
+            transition: transform 0.2s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .song-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .play-button {
+            transition: background-color 0.2s ease;
+        }
+
+        .play-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .floating {
+            animation: floating 2s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .fade-in {
+            opacity: 1;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .song-card {
+                padding: 1rem;
+            }
+
+            .play-button,
+            .lyrics-button {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .card-hover:hover {
+                transform: none;
+            }
+
+            .floating {
+                animation: none;
+            }
+
+            .text-5xl {
+                font-size: 2.5rem;
+            }
+
+            .text-4xl {
+                font-size: 2rem;
+            }
+
+            .text-2xl {
+                font-size: 1.25rem;
+            }
+
+            .text-xl {
+                font-size: 1.1rem;
+            }
+
+            /* Touch-friendly buttons */
+            button {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+        }
+
+        /* Album Cover Styles */
+        .album-cover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .album-cover:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(147, 51, 234, 0.3);
+        }
+
+        .album-cover-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .album-cover-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(147, 51, 234, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .album-cover-container:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Performance optimizations */
+        .backdrop-filter {
+            -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+        }
+
+        .bg-opacity-20 {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .bg-opacity-30 {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Header -->
+    <header class="fixed top-0 w-full bg-black bg-opacity-20 backdrop-filter backdrop-blur-lg z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold">
+                    <i class="fas fa-music mr-2"></i>26
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#home" class="hover:text-gray-300 transition" data-key="nav.home">Home</a>
+                    <a href="#platforms" class="hover:text-gray-300 transition" data-key="nav.platforms">Platforms</a>
+                    <a href="#albumStory" class="hover:text-gray-300 transition" data-key="nav.albumStory">Album
+                        Story</a>
+                    <div class="relative">
+                        <button onclick="toggleLanguageMenu()" class="hover:text-gray-300 transition flex items-center">
+                            <i class="fas fa-globe mr-2"></i>
+                            <span id="currentLang">EN</span>
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div id="languageMenu"
+                            class="absolute right-0 mt-2 w-32 bg-gray-800 rounded-lg shadow-lg hidden z-50">
+                            <button onclick="setLanguage('en')"
+                                class="w-full text-left px-4 py-2 hover:bg-gray-700 transition rounded-t-lg">
+                                <i class="fas fa-flag mr-2"></i>English
+                            </button>
+                            <button onclick="setLanguage('id')"
+                                class="w-full text-left px-4 py-2 hover:bg-gray-700 transition rounded-b-lg">
+                                <i class="fas fa-flag mr-2"></i>Bahasa Indonesia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button class="md:hidden" onclick="toggleMenu()">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Language Buttons -->
+    <div class="md:hidden fixed top-20 right-6 z-40">
+        <div class="flex space-x-2">
+            <button onclick="setLanguage('en')"
+                class="px-3 py-2 bg-gray-800 bg-opacity-90 rounded-lg hover:bg-gray-700 transition text-sm">
+                <i class="fas fa-flag mr-1"></i>EN
+            </button>
+            <button onclick="setLanguage('id')"
+                class="px-3 py-2 bg-gray-800 bg-opacity-90 rounded-lg hover:bg-gray-700 transition text-sm">
+                <i class="fas fa-flag mr-1"></i>ID
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-90 z-40 hidden">
+        <div class="flex flex-col items-center justify-center h-full space-y-8 text-2xl">
+            <a href="#home" onclick="toggleMenu()" class="hover:text-gray-500" data-key="nav.home">Home</a>
+            <a href="#platforms" onclick="toggleMenu()" class="hover:text-gray-500"
+                data-key="nav.platforms">Platforms</a>
+            <a href="#albumStory" onclick="toggleMenu()" class="hover:text-gray-500" data-key="nav.albumStory">Album
+                Story</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="container mx-auto text-center fade-in">
+            <div class="floating mb-8">
+                <div
+                    class="w-64 h-64 mx-auto rounded-full overflow-hidden shadow-2xl border-4 border-purple-500 border-opacity-50 album-cover-container">
+                    <img src="album_26_cover_alt.png" alt="Album 26 Cover"
+                        class="w-full h-full object-cover album-cover">
+                </div>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">26</h1>
+            <p class="text-xl md:text-2xl mb-8 text-gray-300" data-key="hero.subtitle">Stories of Resilience & Survival
+            </p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="scrollToSection('platforms')"
+                    class="bg-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-purple-700 transition border border-purple-500"
+                    data-key="hero.listenPlatforms">
+                    <i class="fas fa-music mr-2"></i>Listen on Platforms
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Music Platforms Section -->
+    <section id="platforms" class="py-20 px-6 bg-black bg-opacity-30">
+        <div class="container mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-8" data-key="platforms.title">Listen to Album "26"
+            </h2>
+            <p class="text-xl text-center text-gray-300 mb-16" data-key="platforms.subtitle">Available on your favorite
+                streaming platforms</p>
+
+            <div class="max-w-4xl mx-auto text-center">
+                <button onclick="openPlatformPopup()"
+                    class="bg-purple-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-purple-700 transition transform hover:scale-105 text-lg">
+                    <i class="fas fa-globe-americas mr-3"></i>
+                    <span data-key="platforms.viewAll">View All Platforms (48+)</span>
+                </button>
+
+                <div class="mt-12">
+                    <p class="text-gray-300 mb-4" data-key="platforms.description">Get the best experience by listening
+                        to the full album on your preferred platform</p>
+                    <div class="bg-purple-900 bg-opacity-30 rounded-xl p-6 max-w-2xl mx-auto text-center">
+                        <p class="text-lg font-semibold mb-2" data-key="platforms.albumInfo">🎵 Album "26" - Stories of
+                            Resilience</p>
+                        <p class="text-gray-300" data-key="platforms.songCount">5 inspiring songs about growth and
+                            resilience</p>
+                        <p class="text-sm text-gray-400 mt-2">Release date: 22 May 2026</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Popup Modal -->
+    <div id="platformPopup" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden overflow-y-auto">
+        <div class="min-h-screen px-4 py-8">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="text-3xl font-bold text-white">All Streaming Platforms</h3>
+                    <button onclick="closePlatformPopup()" class="text-white hover:text-gray-300 transition">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+
+                <!-- Platform Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                    <!-- Major Platforms -->
+                    <a href="https://open.spotify.com/album/4NLjMwNPpkfoPwvi44lwrl?si=MUl9AdP6QZe-alPo3Wtegg"
+                        target="_blank"
+                        class="bg-green-600 hover:bg-green-700 text-white rounded-lg p-4 text-center transition transform hover:scale-105">
+                        <i class="fab fa-spotify text-3xl mb-2"></i>
+                        <p class="font-semibold text-sm">Spotify</p>
+                    </a>
+
+                    <a href="https://music.apple.com/id/album/26-ep/1892348390" target="_blank"
+                        class="bg-gray-900 hover:bg-gray-800 text-white rounded-lg p-4 text-center transition transform hover:scale-105">
+                        <i class="fab fa-apple text-3xl mb-2"></i>
+                        <p class="font-semibold text-sm">Apple Music</p>
+                    </a>
+
+                    <a href="https://music.youtube.com/playlist?list=OLAK5uy_m1DAsDfbEk62rlqvmUXTcZb2e8-vFAcFY&si=LFz9IQ1DwtORLg3P"
+                        target="_blank"
+                        class="bg-red-600 hover:bg-red-700 text-white rounded-lg p-4 text-center transition transform hover:scale-105">
+                        <i class="fab fa-youtube text-3xl mb-2"></i>
+                        <p class="font-semibold text-sm">YouTube Music</p>
+                    </a>
+
+                    <!-- Additional Platforms -->
+                    <a href="https://on.soundcloud.com/As9IouE8fUivkGrUSF" target="_blank"
+                        class="bg-orange-500 hover:bg-orange-600 text-white rounded-lg p-4 text-center transition transform hover:scale-105">
+                        <i class="fab fa-soundcloud text-3xl mb-2"></i>
+                        <p class="font-semibold text-sm">SoundCloud</p>
+                    </a>
+
+
+                    <a href="https://www.joox.com/id/album/Y2zfM3co5oloFkYnHVYGeA==" target="_blank"
+                        class="bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg p-4 text-center transition transform hover:scale-105">
+                        <i class="fas fa-play-circle text-3xl mb-2"></i>
+                        <p class="font-semibold text-sm">Joox</p>
+                    </a>
+
+                </div>
+
+                <!-- Footer Info -->
+                <div class="mt-8 text-center text-gray-300">
+                    <p class="text-sm">Release date: 22 May 2026</p>
+                    <p class="text-xs mt-2">More platforms being added regularly</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Album Story Section -->
+    <section id="albumStory" class="py-20 px-6 bg-black bg-opacity-20">
+        <div class="container mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-8" data-key="story.title">The Journey of 26</h2>
+            <p class="text-xl text-center text-gray-300 mb-16" data-key="story.subtitle">A Complete Story in Five
+                Chapters</p>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="song-card rounded-2xl p-8 mb-12">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-300" data-key="story.narrativeTitle">The Complete
+                        Narrative</h3>
+
+                    <div class="space-y-6 text-lg leading-relaxed">
+                        <p data-key="story.narrative">
+                            Album "26" is a complete journey of a young person facing life's challenges,
+                            processing experiences, and finally finding peace within themselves. This is a
+                            universal story about growth that can be experienced by anyone, of any age and background.
+                        </p>
+
+                        <div class="border-l-4 border-gray-600 pl-6 py-4">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-300" data-key="story.chapter1">📖 Bab 1:
+                                Grew Up Before Recess</h4>
+                            <p class="mb-3" data-key="story.chapter1Text">
+                                Perjalanan dimulai dengan momen di mana kita harus belajar hal-hal baru lebih cepat dari
+                                yang diharapkan.
+                                Tanggung jawab datang lebih awal, tantangan membuat kita matang lebih cepat, dan kita
+                                mulai menyadari
+                                bahwa hidup tidak selalu sesederhana yang kita pikirkan.
+                            </p>
+                            <p class="text-gray-400 italic">
+                                "Sometimes the greatest growth comes from the challenges we never expected."
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-gray-600 pl-6 py-4">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-300" data-key="story.chapter2">📖 Bab 2: 26
+                            </h4>
+                            <p class="mb-3" data-key="story.chapter2Text">
+                                Di usia 26, kita mencapai titik di mana kita mulai mengevaluasi kembali arah perjalanan
+                                hidup.
+                                Ada perasaan sudah cukup dewasa, tapi juga sadar bahwa masih banyak yang perlu
+                                dipelajari.
+                                Kita mulai memahami bahwa setiap orang memiliki perjuangan internal yang tidak terlihat
+                                orang lain.
+                            </p>
+                            <p class="text-gray-400 italic">
+                                "Every age brings new wisdom, and every challenge brings new strength."
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-gray-600 pl-6 py-4">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-300" data-key="story.chapter3">📖 Bab 3: Not
+                                That Boy</h4>
+                            <p class="mb-3" data-key="story.chapter3Text">
+                                Di bab ini, kita memutuskan untuk tidak lagi menjadi versi diri yang lama.
+                                Ini adalah momen transformasi di mana kita menyadari bahwa kita punya kekuatan untuk
+                                memilih
+                                bagaimana merespons kehidupan.
+                                Masa lalu adalah guru, bukan penjara yang membatasi kita.
+                            </p>
+                            <p class="text-gray-400 italic">
+                                "Growth isn't about forgetting where we came from, it's about honoring how far we've
+                                come."
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-gray-600 pl-6 py-4">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-300" data-key="story.chapter4">📖 Bab 4: New
+                                Man, New Me</h4>
+                            <p class="mb-3" data-key="story.chapter4Text">
+                                Transformasi mencapai puncaknya di sini. Kita belajar menerima semua bagian dari
+                                perjalanan hidup,
+                                menghargai versi diri yang lebih muda karena telah melakukan yang terbaik, dan menyadari
+                                bahwa
+                                setiap bekas luka adalah bukti bahwa kita telah bertahan.
+                            </p>
+                            <p class="text-gray-400 italic">
+                                "True transformation comes when we embrace all versions of ourselves."
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-gray-600 pl-6 py-4">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-300" data-key="story.chapter5">📖 Bab 5: The
+                                Man I'm Trying to Be</h4>
+                            <p class="mb-3" data-key="story.chapter5Text">
+                                Perjalanan berakhir dengan kesadaran bahwa pertumbuhan adalah proses seumur hidup.
+                                Kita semua sedang belajar menjadi versi terbaik dari diri kita, belajar memahami hal-hal
+                                kompleks
+                                dalam hidup, dan menemukan bahwa kita tidak perlu sempurna untuk bahagia.
+                            </p>
+                            <p class="text-gray-400 italic">
+                                "We are all works in progress, and that's what makes life beautiful."
+                            </p>
+                        </div>
+
+                        <div class="mt-8 p-6 bg-gray-800 bg-opacity-30 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-3 text-center text-gray-300"
+                                data-key="story.finalMessage">💫 Pesan Akhir Album</h4>
+                            <p class="text-center leading-relaxed" data-key="story.finalMessageText">
+                                Album "26" mengajarkan kita bahwa setiap tahap kehidupan memiliki nilainya sendiri.
+                                Dari masa muda yang penuh pertanyaan hingga dewasa yang penuh pemahaman,
+                                kita semua sedang dalam perjalanan untuk menjadi lebih baik setiap hari.
+                                Tidak ada akhir dari pertumbuhan, hanya babak-babak baru dalam cerita kita.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="bg-black bg-opacity-30 py-8 px-6">
+        <div class="container mx-auto text-center">
+            <p class="text-purple-200" data-key="footer.copyright">&copy; 2026 Journey of Sounds. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Smooth scrolling
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+
+        // Language switching functionality
+        const translations = {
+            'en': {
+                'nav.home': 'Home',
+                'nav.platforms': 'Platforms',
+                'nav.albumStory': 'Album Story',
+                'nav.instagramStory': 'IG Story',
+                'hero.subtitle': 'Stories of Resilience & Survival',
+                'hero.listenPlatforms': 'Listen on Platforms',
+                'platforms.title': 'Listen to Album "26"',
+                'platforms.subtitle': 'Available on your favorite streaming platforms',
+                'platforms.viewAll': 'View All Platforms (48+)',
+                'platforms.description': 'Get best experience by listening to full album on your preferred platform',
+                'platforms.albumInfo': '🎵 Album "26" - Stories of Resilience',
+                'platforms.songCount': '5 inspiring songs about growth and resilience',
+                'story.title': 'The Journey of 26',
+                'story.subtitle': 'A Complete Story in Five Chapters',
+                'story.narrativeTitle': 'The Complete Narrative',
+                'story.narrative': 'Album "26" is a complete journey of a young person facing life\'s challenges, processing experiences, and finally finding peace within themselves. This is a universal story about growth that can be experienced by anyone, of any age and background.',
+                'story.chapter1': '📖 Chapter 1: Grew Up Before Recess',
+                'story.chapter1Text': 'The journey begins with moments in life when we have to learn new things faster than expected. Responsibility comes earlier, challenges make us mature faster, and we start to realize that life is not always as simple as we thought.',
+                'story.chapter2': '📖 Chapter 2: 26',
+                'story.chapter2Text': 'At age 26, we reach a point where we start to re-evaluate the direction of our life journey. We feel mature enough, but also aware that there is still much to learn.',
+                'story.chapter3': '📖 Chapter 3: Not That Boy',
+                'story.chapter3Text': 'In this chapter, we decide not to be the old version of ourselves. This is a moment of transformation where we realize we have the power to choose how to respond to life.',
+                'story.chapter4': '📖 Chapter 4: New Man, New Me',
+                'story.chapter4Text': 'Transformation reaches its peak here. We learn to accept all parts of life\'s journey, appreciating the younger version of ourselves for doing their best.',
+                'story.chapter5': '📖 Chapter 5: The Man I\'m Trying to Be',
+                'story.chapter5Text': 'The journey ends with the realization that growth is a lifelong process. We are all learning to become the best version of ourselves.',
+                'story.finalMessage': 'Album "26" teaches us that every stage of life has its own value. From youth full of questions to adulthood full of understanding, we are all on a journey to become better every day.',
+                'footer.copyright': '© 2026 Journey of Sounds. All rights reserved.'
+            },
+            'id': {
+                'nav.home': 'Beranda',
+                'nav.platforms': 'Platform',
+                'nav.albumStory': 'Kisah Album',
+                'nav.instagramStory': 'IG Story',
+                'hero.subtitle': 'Kisah Ketahanan & Kelangsungan Hidup',
+                'hero.listenPlatforms': 'Dengarkan di Platform',
+                'platforms.title': 'Dengarkan Album "26"',
+                'platforms.subtitle': 'Tersedia di platform streaming favorit Anda',
+                'platforms.viewAll': 'Lihat Semua Platform (48+)',
+                'platforms.description': 'Dapatkan pengalaman terbaik dengan mendengarkan full album di platform pilihan Anda',
+                'platforms.albumInfo': '🎵 Album "26" - Stories of Resilience',
+                'platforms.songCount': '5 lagu yang menginspirasi tentang pertumbuhan dan ketahanan',
+                'story.title': 'Perjalanan 26',
+                'story.subtitle': 'Kisah Lengkap dalam Lima Bab',
+                'story.narrativeTitle': 'Kisah Lengkap',
+                'story.narrative': 'Album "26" adalah sebuah perjalanan lengkap dari seorang pemuda yang menghadapi tantangan hidup, memproses pengalaman, dan akhirnya menemukan kedamaian dalam dirinya sendiri. Ini adalah Kisah universal tentang pertumbuhan yang bisa dialami oleh siapa saja, dari segala usia dan latar belakang.',
+                'story.chapter1': '📖 Bab 1: Grew Up Before Recess',
+                'story.chapter1Text': 'Perjalanan dimulai dengan momen di mana kita harus belajar hal-hal baru lebih cepat dari yang diharapkan. Tanggung jawab datang lebih awal, tantangan membuat kita matang lebih cepat, dan kita mulai menyadari bahwa hidup tidak selalu sesederhana yang kita pikirkan.',
+                'story.chapter2': '📖 Bab 2: 26',
+                'story.chapter2Text': 'Di usia 26, kita mencapai titik di mana kita mulai mengevaluasi kembali arah perjalanan hidup. Kita merasa sudah cukup dewasa, tapi juga sadar bahwa masih banyak yang perlu dipelajari.',
+                'story.chapter3': '📖 Bab 3: Not That Boy',
+                'story.chapter3Text': 'Di bab ini, kita memutuskan untuk tidak lagi menjadi versi diri yang lama. Ini adalah momen transformasi di mana kita menyadari bahwa kita punya kekuatan untuk memilih bagaimana merespons kehidupan.',
+                'story.chapter4': '📖 Bab 4: New Man, New Me',
+                'story.chapter4Text': 'Transformasi mencapai puncaknya di sini. Kita belajar menerima semua bagian dari perjalanan hidup, menghargai versi diri yang lebih muda karena telah melakukan yang terbaik.',
+                'story.chapter5': '📖 Bab 5: The Man I\'m Trying to Be',
+                'story.chapter5Text': 'Perjalanan berakhir dengan kesadaran bahwa pertumbuhan adalah proses seumur hidup. Kita semua sedang belajar menjadi versi terbaik dari diri kita.',
+                'story.finalMessage': 'Album "26" mengajarkan kita bahwa setiap tahap kehidupan memiliki nilainya sendiri. Dari masa muda yang penuh pertanyaan hingga dewasa yang penuh pemahaman, kita semua sedang dalam perjalanan untuk menjadi lebih baik setiap hari.',
+                'footer.copyright': '© 2026 Journey of Sounds. All rights reserved.'
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function toggleLanguageMenu() {
+            const menu = document.getElementById('languageMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('currentLang').textContent = lang.toUpperCase();
+
+            // Update all elements with data-key attribute
+            const elements = document.querySelectorAll('[data-key]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (key && translations[lang][key]) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+
+            // Update navigation
+            updateNavigation(lang);
+
+            // Close language menu
+            document.getElementById('languageMenu').classList.add('hidden');
+
+            // Save preference
+            localStorage.setItem('preferredLanguage', lang);
+        }
+
+        function getElementKey(element) {
+            // Generate key based on element content and position
+            const text = element.textContent.trim();
+            const parentClass = element.parentElement?.className || '';
+
+            if (text.includes('Home') || text.includes('Beranda')) return 'nav.home';
+            if (text.includes('Platform') || text.includes('Platforms')) return 'nav.platforms';
+            if (text.includes('Preview')) return 'nav.preview';
+            if (text.includes('Album Story') || text.includes('Kisah Album')) return 'nav.albumStory';
+            if (text.includes('Stories of Resilience')) return 'hero.subtitle';
+            if (text.includes('Listen on') || text.includes('Dengarkan di')) return 'hero.listenPlatforms';
+            if (text.includes('Preview Songs') || text.includes('Preview Lagu')) return 'hero.previewSongs';
+            if (text.includes('Listen to Album') || text.includes('Dengarkan Album')) return 'platforms.title';
+            if (text.includes('Available on') || text.includes('Tersedia di')) return 'platforms.subtitle';
+            if (text.includes('Get best experience')) return 'platforms.description';
+            if (text.includes('Song Previews') || text.includes('Preview Lagu')) return 'songs.title';
+            if (text.includes('Listen to 30-second') || text.includes('Dengarkan 30 detik')) return 'songs.subtitle';
+            if (text.includes('Preview 30')) return 'songs.previewButton';
+            if (text.includes('The Journey of 26') || text.includes('Perjalanan 26')) return 'story.title';
+            if (text.includes('Complete Story') || text.includes('Kisah Lengkap')) return 'story.subtitle';
+            if (text.includes('🎵 Album')) return 'platforms.albumInfo';
+            if (text.includes('5 inspiring') || text.includes('5 lagu')) return 'platforms.songCount';
+
+            return null;
+        }
+
+        function updateNavigation(lang) {
+            const navLinks = document.querySelectorAll('nav a[data-lang="en"]');
+            navLinks.forEach(link => {
+                const key = getElementKey(link);
+                if (key && translations[lang][key]) {
+                    link.textContent = translations[lang][key];
+                }
+            });
+        }
+
+        // Initialize language from localStorage or default to English
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedLanguage = localStorage.getItem('preferredLanguage') || 'en';
+            setLanguage(savedLanguage);
+        });
+
+        // Close language menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const languageMenu = document.getElementById('languageMenu');
+            const languageButton = event.target.closest('button[onclick="toggleLanguageMenu()"]');
+
+            if (!languageButton && !languageMenu.contains(event.target)) {
+                languageMenu.classList.add('hidden');
+            }
+        });
+
+        // Platform popup functionality
+        function openPlatformPopup() {
+            const popup = document.getElementById('platformPopup');
+            popup.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closePlatformPopup() {
+            const popup = document.getElementById('platformPopup');
+            popup.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close popup when clicking outside the content
+        document.addEventListener('click', function (event) {
+            const popup = document.getElementById('platformPopup');
+            const popupContent = event.target.closest('.max-w-7xl');
+
+            if (popup && !popup.classList.contains('hidden') && !popupContent && !event.target.closest('button[onclick="openPlatformPopup()"]')) {
+                closePlatformPopup();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closePlatformPopup();
+            }
+        });
+
+
+        // Add scroll animations
+        window.addEventListener('scroll', function () {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
